@@ -1,4 +1,4 @@
-# Cloud Computing - English Project ⛈️
+# Cloud Computing - English Project 🌩️
 
 ## Sobre o projeto:
 <p><b>Link:</b> https://cloud-computing-una2021.netlify.app/index.html</p>
