@@ -154,9 +154,7 @@
 			};
 		}
 
-		// If a handler is already declared in the element's onclick attribute, it will be fired before
-		// FastClick's onClick handler. Fix this by pulling out the user-defined handler function and
-		// adding it as listener.
+
 		if (typeof layer.onclick === 'function') {
 
 			// Android browser on at least 3.2 requires a new reference to the function in layer.onclick
@@ -405,14 +403,7 @@
 
 			if (!deviceIsIOS4) {
 
-				// Weird things happen on iOS when an alert or confirm dialog is opened from a click event callback (issue #23):
-				// when the user next taps anywhere else on the page, new touchstart and touchend events are dispatched
-				// with the same identifier as the touch event that previously triggered the click that triggered the alert.
-				// Sadly, there is an issue on iOS 4 that causes some normal touch events to have the same identifier as an
-				// immediately preceeding touch event (issue #52), so this fix is unavailable on that platform.
-				// Issue 120: touch.identifier is 0 when Chrome dev tools 'Emulate touch events' is set with an iOS device UA string,
-				// which causes all touch events to be ignored. As this block only applies to iOS, and iOS identifiers are always long,
-				// random integers, it's safe to to continue if the identifier is 0 here.
+
 				if (touch.identifier && touch.identifier === this.lastTouchIdentifier) {
 					event.preventDefault();
 					return false;
@@ -420,12 +411,7 @@
 
 				this.lastTouchIdentifier = touch.identifier;
 
-				// If the target element is a child of a scrollable layer (using -webkit-overflow-scrolling: touch) and:
-				// 1) the user does a fling scroll on the scrollable layer
-				// 2) the user stops the fling scroll with another tap
-				// then the event.target of the last 'touchend' event will be the element that was under the user's finger
-				// when the fling scroll was started, causing FastClick to send a click event to that layer - unless a check
-				// is made to ensure that a parent layer was not scrolled before sending a synthetic click (issue #42).
+
 				this.updateScrollParent(targetElement);
 			}
 		}
@@ -540,10 +526,7 @@
 		this.trackingClick = false;
 		this.trackingClickStart = 0;
 
-		// On some iOS devices, the targetElement supplied with the event is invalid if the layer
-		// is performing a transition or scroll, and has to be re-detected manually. Note that
-		// for this to function correctly, it must be called *after* the event target is checked!
-		// See issue #57; also filed as rdar://13048589 .
+
 		if (deviceIsIOSWithBadTarget) {
 			touch = event.changedTouches[0];
 
@@ -565,8 +548,7 @@
 			}
 		} else if (this.needsFocus(targetElement)) {
 
-			// Case 1: If the touch started a while ago (best guess is 100ms based on tests for issue #36) then focus will be triggered anyway. Return early and unset the target element reference so that the subsequent click will be allowed through.
-			// Case 2: Without this exception for input elements tapped when the document is contained in an iframe, then any inputted text won't be visible even though the value attribute is updated as the user types (issue #37).
+
 			if ((event.timeStamp - trackingClickStart) > 100 || (deviceIsIOS && window.top !== window && targetTagName === 'input')) {
 				this.targetElement = null;
 				return false;
@@ -575,8 +557,7 @@
 			this.focus(targetElement);
 			this.sendClick(targetElement, event);
 
-			// Select elements need the event to go through on iOS 4, otherwise the selector menu won't open.
-			// Also this breaks opening selects when VoiceOver is active on iOS6, iOS7 (and possibly others)
+
 			if (!deviceIsIOS || targetTagName !== 'select') {
 				this.targetElement = null;
 				event.preventDefault();
@@ -587,16 +568,13 @@
 
 		if (deviceIsIOS && !deviceIsIOS4) {
 
-			// Don't send a synthetic click event if the target element is contained within a parent layer that was scrolled
-			// and this tap is being used to stop the scrolling (usually initiated by a fling - issue #42).
+
 			scrollParent = targetElement.fastClickScrollParent;
 			if (scrollParent && scrollParent.fastClickLastScrollTop !== scrollParent.scrollTop) {
 				return true;
 			}
 		}
 
-		// Prevent the actual click from going though - unless the target node is marked as requiring
-		// real clicks or if it is in the whitelist in which case only non-programmatic clicks are permitted.
 		if (!this.needsClick(targetElement)) {
 			event.preventDefault();
 			this.sendClick(targetElement, event);
@@ -639,9 +617,7 @@
 			return true;
 		}
 
-		// Derive and check the target element to see whether the mouse event needs to be permitted;
-		// unless explicitly enabled, prevent non-touch click events from triggering actions,
-		// to prevent ghost/doubleclicks.
+
 		if (!this.needsClick(this.targetElement) || this.cancelNextClick) {
 
 			// Prevent any user-added listeners declared on FastClick element from being fired.
@@ -660,7 +636,7 @@
 			return false;
 		}
 
-		// If the mouse event is permitted, return true for the action to go through.
+
 		return true;
 	};
 
