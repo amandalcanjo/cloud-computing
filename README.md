@@ -6,6 +6,8 @@
 ## Tech/Framework Used
 * HTML
 * CSS
+* SCSS
+* Bootstrap
 * JavaScript
 
 ## Layout 💗
@@ -14,5 +16,4 @@
 <img align="centeer" alt="amanda-html" height="290" widht="290" src="https://user-images.githubusercontent.com/81193788/186444651-ee2da65e-e8fb-4507-a365-fc4aedad2cdd.jpg"/>
 
 ## Autor: 
-[![Amanda Alcanjo](https://img.shields.io/badge/amanda_alcanjo-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/amanda-alcanjo/)
-
+[Amanda Alcanjo](https://portfolio-amandalcanjo.netlify.app/)
